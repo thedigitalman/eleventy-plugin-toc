@@ -2,7 +2,7 @@
 
 This [Eleventy (11ty)](https://www.11ty.dev/) plugin generates table of contents (TOC) navigation from page headings using an [Eleventy filter](https://www.11ty.dev/docs/filters/).
 
-It also adds a heading, or label, for the TOC to help make the navigation accessible. Please reference [4.3.6 Navigation | WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_lh_navigation) and [Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/landmarks/navigation.html) for more information.
+It also adds a heading/label for the TOC to help make the navigation accessible. Please reference [4.3.6 Navigation | WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_lh_navigation) and [Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/landmarks/navigation.html) for more information.
 
 ## Installation
 
@@ -93,7 +93,7 @@ The options must be a stringified JSON object (`JSON.parse()`-able). You only ne
 
 **All headings must be in proper order, and don’t skip levels.** Please reference [H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) for more information.
 
-Open a template file and add the filter.
+Open a layout template file and add the filter.
 
 Liquid
 ```liquid

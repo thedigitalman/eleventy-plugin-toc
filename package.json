@@ -1,7 +1,7 @@
 {
-  "name": "eleventy-plugin-toc",
+  "name": "eleventy-plugin-toc-a11y",
   "version": "2.0.0",
-  "description": "Eleventy filter to generate a Table of Contents in a template.",
+  "description": "Eleventy filter to generate a Table of Contents with accessible heading/label in a layout template.",
   "main": ".eleventy.js",
   "scripts": {
     "lint": "eslint src/**"
