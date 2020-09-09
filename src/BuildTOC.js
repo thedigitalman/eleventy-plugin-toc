@@ -1,4 +1,5 @@
 const cheerio = require('cheerio')
+
 const ParseOptions = require('./ParseOptions')
 const NestHeadings = require('./NestHeadings')
 const BuildList = require('./BuildList')
@@ -8,10 +9,10 @@ const defaults = {
   wrapper: 'nav',
   wrapperClass: 'toc',
   wrapperLabel: 'Table of contents',
-  wrapperHeading: false,
+  wrapperHeading: true,
   wrapperHeadingLevel: 'h2',
   wrapperHeadingClass: 'toc-heading',
-  listType: 'ul',
+  listTypeUnordered: false,
   flat: false,
 }
 
@@ -24,19 +25,19 @@ const BuildTOC = (text, opts) => {
     wrapperHeading,
     wrapperHeadingLevel,
     wrapperHeadingClass,
-    listType,
+    listTypeUnordered,
     flat,
   } = ParseOptions(opts, defaults)
   const $ = cheerio.load(text)
   const headings = NestHeadings(tags, $)
   const output = `<${wrapper} class="${wrapperClass}" aria-label="${wrapperLabel}">${BuildList(
     headings,
-    listType,
+    listTypeUnordered,
     flat
   )}</${wrapper}>`
   const outputWithHeading = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="toc-label"><${wrapperHeadingLevel} class="${wrapperHeadingClass}" id="toc-label">${wrapperLabel}</${wrapperHeadingLevel}>${BuildList(
     headings,
-    listType,
+    listTypeUnordered,
     flat
   )}</${wrapper}>`
 
