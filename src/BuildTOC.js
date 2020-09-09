@@ -8,11 +8,11 @@ const defaults = {
   tags: ['h2', 'h3', 'h4', 'h5', 'h6'],
   wrapper: 'nav',
   wrapperClass: 'toc',
-  wrapperLabel: 'Table of contents',
-  wrapperHeading: true,
-  wrapperHeadingLevel: 'h2',
-  wrapperHeadingClass: 'toc-heading',
-  listTypeUnordered: false,
+  heading: true,
+  headingClass: 'toc-heading',
+  headingLevel: 'h2',
+  headingText: 'Table of contents',
+  ul: false,
   flat: false,
 }
 
@@ -21,27 +21,27 @@ const BuildTOC = (text, opts) => {
     tags,
     wrapper,
     wrapperClass,
-    wrapperLabel,
-    wrapperHeading,
-    wrapperHeadingLevel,
-    wrapperHeadingClass,
-    listTypeUnordered,
+    heading,
+    headingClass,
+    headingLevel,
+    headingText,
+    ul,
     flat,
   } = ParseOptions(opts, defaults)
   const $ = cheerio.load(text)
   const headings = NestHeadings(tags, $)
-  const output = `<${wrapper} class="${wrapperClass}" aria-label="${wrapperLabel}">${BuildList(
+  const output = `<${wrapper} class="${wrapperClass}" aria-label="${headingText}">${BuildList(
     headings,
-    listTypeUnordered,
+    ul,
     flat
   )}</${wrapper}>`
-  const outputWithHeading = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="toc-label"><${wrapperHeadingLevel} class="${wrapperHeadingClass}" id="toc-label">${wrapperLabel}</${wrapperHeadingLevel}>${BuildList(
+  const outputWithHeading = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="toc-label"><${headingLevel} class="${headingClass}" id="toc-label">${headingText}</${headingLevel}>${BuildList(
     headings,
-    listTypeUnordered,
+    ul,
     flat
   )}</${wrapper}>`
 
-  if (wrapper !== 'nav' || wrapperHeading) {
+  if (wrapper !== 'nav' || heading) {
     return headings.length > 1 ? outputWithHeading : undefined
   } else {
     return headings.length > 1 ? output : undefined

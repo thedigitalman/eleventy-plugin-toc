@@ -1,115 +1,138 @@
 # eleventy-plugin-toc
 
-This Eleventy plugin will generate a TOC from page content using an Eleventy filter.
+This [Eleventy (11ty)](https://www.11ty.dev/) plugin generates table of contents (TOC) navigation from page headings using an [Eleventy filter](https://www.11ty.dev/docs/filters/).
+
+It also adds a heading, or label, for the TOC to help make the navigation accessible. Please reference [4.3.6 Navigation | WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_lh_navigation) and [Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/landmarks/navigation.html) for more information.
+
+## Installation
+
+```sh
+npm install eleventy-plugin-toc --save-dev
+```
 
 ## Default Options
 
 ```js
 {
-  tags: ['h2', 'h3', 'h4'], // which heading tags are selected headings must each have an ID attribute
-  wrapper: 'nav',           // element to put around the root `ol`/`ul`
-  wrapperClass: 'toc',      // class for the element around the root `ol`/`ul`
-  ul: false,                // if to use `ul` instead of `ol`
-  flat: false,              // if subheadings should appear as child of parent or as a sibling
+  // heading levels to include
+  tags: ['h2', 'h3', 'h4', 'h5', 'h6'],
+
+  // container element
+  wrapper: 'nav',
+
+  // class on the container element
+  wrapperClass: 'toc',
+
+  // use a heading for the TOC
+  heading: true,
+
+  // class on the TOC heading
+  headingClass: 'toc-heading',
+
+  // level of the TOC heading
+  headingLevel: 'h2',
+
+  // text of the TOC heading
+  headingText: 'Table of contents',
+
+  // use unordered lists instead of ordered lists
+  ul: false,
+
+  // use flat list structure
+  flat: false,
 }
 ```
 
-## Usage
+## Configuration
 
-### 1. Install the plugin
+**All headings must have an `id` attribute.** The plugin uses the `id` attribute of the headings it finds to build the navigation.
 
-```sh
-npm i --save eleventy-plugin-toc
-```
+You can do this manually, but using [`markdown-it`](https://www.npmjs.com/package/markdown-it) and [`markdown-it-anchor`](https://www.npmjs.com/package/markdown-it-anchor) make it easy.
 
-### 2. Make sure your headings have anchor IDs
+### Update your Eleventy config file
 
-**Your heading elements must have `id`s before this plugin will create a TOC.** If there aren't `id`s on your headings, there will be no anchors for this plugin to link to.
-
-I use [`markdown-it-anchor`](https://www.npmjs.com/package/markdown-it-anchor) to add those `id`s to the headings: [Eleventy config example](https://github.com/jdsteinbach/jdsteinbach.github.io/blob/blog/.eleventy.js)
+Open your Eleventy config file (probably `.eleventy.js`), use `addPlugin`, and add some Markdown settings.
 
 ```js
-// .eleventy.js
+const eleventyPluginTOC = require( 'eleventy-plugin-toc' );
+const markdownIt = require( 'markdown-it' );
+const markdownItAnchor = require( 'markdown-it-anchor' );
 
-const markdownIt = require('markdown-it')
-const markdownItAnchor = require('markdown-it-anchor')
+module.exports = function ( eleventyConfig ) {
+	// Plugins
+	eleventyConfig.addPlugin( eleventyPluginTOC );
 
-module.exports = eleventyConfig => {
-  // Markdown
-  eleventyConfig.setLibrary(
-    'md',
-    markdownIt().use(markdownItAnchor)
-  )
-  // ... your other Eleventy config options
+	// Markdown settings
+	eleventyConfig.setLibrary( 'md',
+		markdownIt().use( markdownItAnchor )
+	);
 }
 ```
 
-### 3. Add this plugin to your Eleventy config
+### Override Default Options
 
+Eleventy config file
 ```js
-// .eleventy.js
-
-const pluginTOC = require('eleventy-plugin-toc')
-
-module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(pluginTOC)
-}
+eleventyConfig.addPlugin( pluginToC, {
+	wrapper: 'div',
+	wrapperClass: 'page-toc',
+	wrapperHeadingClass: 'page-toc-heading'
+});
 ```
 
-#### 3.1 You can override the default plugin options
-
-```js
-module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(pluginTOC, {
-    tags: ['h2', 'h3'],
-    wrapper: 'div'
-  })
-}
-```
-
-### 4. Use the filter in your template
-
+Inline
 ```liquid
-<article>
-  {{ content }}
-</article>
+<aside>
+  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' }}
+</aside>
+```
+
+The options must be a stringified JSON object (`JSON.parse()`-able). You only need to include the key-value pairs you want to override. All [default-options](#default-options) are preserved.
+
+### Usage
+
+**All headings must be in proper order, and don’t skip levels.** Please reference [H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) for more information.
+
+Open a template file and add the filter.
+
+Liquid
+```liquid
 <aside>
   {{ content | toc }}
 </aside>
+
+<div>
+  {{ content }}
+</div>
 ```
 
-If you're using Nunjucks, include the `safe` filter:
-
+Nunjucks
 ```njk
-<article>
-  {{ content | safe }}
-</article>
 <aside>
   {{ content | toc | safe }}
 </aside>
+
+<div>
+  {{ content | safe }}
+</div>
 ```
 
-If you want to conditionally render a wrapper element, the filter will return `undefined` when no markup is generated:
+You may want to conditionally render the wrapper element. Because the filter will return `undefined` when no markup is generated.
 
-
+Liquid
 ```liquid
 {% if content | toc %}
-  <aside>
-    {{ content | toc }}
-  </aside>
+<aside>
+  {{ content | toc }}
+</aside>
 {% endif %}
 ```
 
-### 5. Override default options if necessary
-
-Pass a stringified JSON object (must be `JSON.parse()`-able) as an option for in your template. Because this is an object, you only need to include the key-value pairs you need to override; [defaults](#default-options) will be preserved.
-
-```liquid
+Nunjucks
+```njk
+{% if content | toc %}
 <aside>
-  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"content-tableau"}' }}
+  {{ content | toc | safe }}
 </aside>
+{% endif %}
 ```
-
-## Roadmap
-
-- [ ] Some tests would be nice
