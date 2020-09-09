@@ -1,4 +1,4 @@
-# eleventy-plugin-toc
+# eleventy-plugin-toc-a11y
 
 This [Eleventy (11ty)](https://www.11ty.dev/) plugin generates table of contents (TOC) navigation from page headings using an [Eleventy filter](https://www.11ty.dev/docs/filters/).
 
