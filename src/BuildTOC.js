@@ -30,12 +30,12 @@ const BuildTOC = (text, opts) => {
   } = ParseOptions(opts, defaults)
   const $ = cheerio.load(text)
   const headings = NestHeadings(tags, $)
-  const output = `<${wrapper} class="${wrapperClass}" aria-label="${headingText}">${BuildList(
+  const output = `<${wrapper} class="${wrapperClass}" role="navigation" aria-label="${headingText}">${BuildList(
     headings,
     ul,
     flat
   )}</${wrapper}>`
-  const outputWithHeading = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="toc-label"><${headingLevel} class="${headingClass}" id="toc-label">${headingText}</${headingLevel}>${BuildList(
+  const outputWithHeading = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="navTOC"><${headingLevel} class="${headingClass}" id="navTOC">${headingText}</${headingLevel}>${BuildList(
     headings,
     ul,
     flat

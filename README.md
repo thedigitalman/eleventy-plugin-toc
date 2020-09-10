@@ -7,7 +7,7 @@ It also adds a heading/label for the TOC to help make the navigation accessible.
 ## Installation
 
 ```sh
-npm install eleventy-plugin-toc --save-dev
+npm install eleventy-plugin-toc-ally --save-dev
 ```
 
 ## Default Options
@@ -26,7 +26,7 @@ npm install eleventy-plugin-toc --save-dev
   // use a heading for the TOC
   heading: true,
 
-  // class on the TOC heading
+  // CSS class name of the TOC heading
   headingClass: 'toc-heading',
 
   // level of the TOC heading
@@ -69,31 +69,11 @@ module.exports = function ( eleventyConfig ) {
 }
 ```
 
-### Override Default Options
+## Usage
 
-Eleventy config file
-```js
-eleventyConfig.addPlugin( pluginToC, {
-	wrapper: 'div',
-	wrapperClass: 'page-toc',
-	wrapperHeadingClass: 'page-toc-heading'
-});
-```
+**All headings must be in proper order without skipping levels.** Please reference [H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) for more information.
 
-Inline
-```liquid
-<aside>
-  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' }}
-</aside>
-```
-
-The options must be a stringified JSON object (`JSON.parse()`-able). You only need to include the key-value pairs you want to override. All [default-options](#default-options) are preserved.
-
-### Usage
-
-**All headings must be in proper order, and don’t skip levels.** Please reference [H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) for more information.
-
-Open a layout template file and add the filter.
+Open a layout template file and add the filter to your content.
 
 Liquid
 ```liquid
@@ -117,6 +97,10 @@ Nunjucks
 </div>
 ```
 
+Always include the safe filter when using Nunjucks.
+
+### Conditional Rendering
+
 You may want to conditionally render the wrapper element. Because the filter will return `undefined` when no markup is generated.
 
 Liquid
@@ -136,3 +120,32 @@ Nunjucks
 </aside>
 {% endif %}
 ```
+
+## Override Default Options
+
+You can override the default options in the Eleventy config file or inline.
+
+Eleventy config file
+```js
+eleventyConfig.addPlugin( pluginToC, {
+	wrapper: 'div',
+	wrapperClass: 'page-toc',
+	wrapperHeadingClass: 'page-toc-heading'
+});
+```
+
+Inline (Liquid)
+```liquid
+<aside>
+  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' }}
+</aside>
+```
+
+Inline (Nunjucks)
+```liquid
+<aside>
+  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' | safe }}
+</aside>
+```
+
+Inline options must be a stringified JSON object (`JSON.parse()`-able). You only need the key-value pairs you want to override. All [default-options](#default-options) are preserved.

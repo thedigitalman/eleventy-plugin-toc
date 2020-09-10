@@ -4,19 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2020-09-11
+## [2.0.0] - 2020-09-10
 
 ### Added
 
-- Add `aria-label` attribute to the wrapper to properly label the navigation.
-- Add `wrapperLabel` option to provide appropriate label text for the navigation.
-- Add `wrapperHeading` option to provide a text heading for the table of contents.
-- Add `wrapperHeadingLevel` option to set the appropriate heading level.
-- Add `wrapperHeadingClass` option to style the heading.
+- Add `role="navigation"` to the wrapper to define the landmark.
+- Add `aria-label` attribute with `headingText` as the value when the wrapper is a `<nav>` element with no heading.
+- Add `heading` option to provide a heading (`<h2>`) for the table of contents. Whose `id` attribute value matches the wrapper’s `aria-labelledby` (`headingText` value).
+- Add `headingClass` option to style the heading.
+- Add `headingLevel` option to set the appropriate heading level for your content.
+- Add `headingText` option to provide text for the heading/label.
 
 ### Changed
 
 - Upgrade and set dependency versions.
+- Change the `ul` option to be a Boolean value.
 
 ### Fixed
 
