@@ -13,7 +13,7 @@ It also adds a heading/label for the TOC to help make the navigation accessible.
 ## Step 1: Installation
 
 ```sh
-npm install eleventy-plugin-toc-ally --save-dev
+npm install eleventy-plugin-toc-a11y --save-dev
 ```
 
 ## Step 2: Configuration
@@ -25,7 +25,7 @@ Open your Eleventy config file (probably `.eleventy.js`), use `addPlugin`, and a
 You can do this manually, but using [`markdown-it`](https://www.npmjs.com/package/markdown-it) and [`markdown-it-anchor`](https://www.npmjs.com/package/markdown-it-anchor) make it easy.
 
 ```js
-const eleventyPluginTOC = require( 'eleventy-plugin-toc' );
+const eleventyPluginTOC = require( 'eleventy-plugin-toc-a11y' );
 const markdownIt = require( 'markdown-it' );
 const markdownItAnchor = require( 'markdown-it-anchor' );
 
