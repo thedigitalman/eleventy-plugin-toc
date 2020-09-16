@@ -162,12 +162,12 @@ eleventyConfig.addPlugin( pluginToC, {
 
 **Inline (Liquid)**
 ```liquid
-{{ content | toc(tags=['h2','h3'],wrapperClass='toc') }}
+{{ content | toc(wrapperClass='page-toc',wrapperHeadingClass='page-toc-heading',headingText='Topics',listType='ul') }}
 ```
 
 **Inline (Nunjucks)**
 ```liquid
-{{ content | toc(tags=['h2','h3'],wrapperClass='toc') | safe }}
+{{ content | toc(wrapperClass='page-toc',wrapperHeadingClass='page-toc-heading',headingText='Topics',listType='ul') | safe }}
 ```
 
 ## References
