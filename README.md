@@ -3,12 +3,59 @@
 - [Step 1: Installation](#step-1-installation)
 - [Step 2: Configuration](#step-2-configuration)
 - [Step 3: Usage](#step-3-usage)
-  - [Conditional Rendering](#conditional-rendering)
+  - [Default Options](#default-options)
   - [Override Default Options](#override-default-options)
+- [References](#references)
 
-This [Eleventy (11ty)](https://www.11ty.dev/) plugin generates table of contents (TOC) navigation from page headings using an [Eleventy filter](https://www.11ty.dev/docs/filters/).
+This [Eleventy (11ty)](https://www.11ty.dev/) plugin generates a table of contents (TOC) from page headings using an [Eleventy filter](https://www.11ty.dev/docs/filters/).
 
-It also adds a heading/label for the TOC to help make the navigation accessible. Please reference [4.3.6 Navigation | WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_lh_navigation) and [Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/landmarks/navigation.html) for more information.
+It adds a navigation landmark with a heading and ARIA role to make it accessible<sup id="fnRef1">[[1]](#fn1)</sup> <sup id="fnRef2">[[2]](#fn2)</sup>. And creates a nested list of headings by level.
+
+**Markdown**
+```markdown
+# Fruits
+
+## Apples
+
+### Empire
+
+### Fuji
+
+### Pink Lady
+
+## Pears
+
+### Bartlett
+
+### Bosc
+
+### Starkrimson
+```
+
+**HTML**
+```html
+<nav class="nav-toc" role="navigation" aria-labelledby="navToc">
+  <h2 class="nav-toc-heading" id="navTOC">Table of contents</h2>
+  <ol class="nav-toc-list">
+    <li class="nav-toc-list-item">
+      <a class="nav-toc-list-item-anchor" href="#apples">Apples</a>
+      <ol class="nav-toc-list">
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#empire">Empire</a></li>
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#fuji">Fuji</a></li>
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#pink-lady">Pink Lady</a></li>
+      </ol>
+    </li>
+    <li class="nav-toc-list-item">
+      <a class="nav-toc-list-item-anchor" href="#oranges">Pears</a>
+      <ol class="nav-toc-list">
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#bartlett">Bartlett</a></li>
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#bosc">Bosc</a></li>
+        <li class="nav-toc-list-item"><a class="nav-toc-list-item-anchor" href="#starkrimson">Starkrimson</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+```
 
 ## Step 1: Installation
 
@@ -18,11 +65,11 @@ npm install eleventy-plugin-toc-a11y --save-dev
 
 ## Step 2: Configuration
 
-Open your Eleventy config file (probably `.eleventy.js`), use `addPlugin`, and add some Markdown settings.
-
 **All headings must have an `id` attribute.** The plugin uses the `id` attribute of the headings it finds to build the navigation.
 
 You can do this manually, but using [`markdown-it`](https://www.npmjs.com/package/markdown-it) and [`markdown-it-anchor`](https://www.npmjs.com/package/markdown-it-anchor) make it easy.
+
+Open your Eleventy config file (probably `.eleventy.js`), use `addPlugin`, and add some Markdown settings.
 
 ```js
 const eleventyPluginTOC = require( 'eleventy-plugin-toc-a11y' );
@@ -30,125 +77,103 @@ const markdownIt = require( 'markdown-it' );
 const markdownItAnchor = require( 'markdown-it-anchor' );
 
 module.exports = function ( eleventyConfig ) {
-	// Plugins
-	eleventyConfig.addPlugin( eleventyPluginTOC );
+  // Plugins
+  eleventyConfig.addPlugin( eleventyPluginTOC );
 
-	// Markdown settings
-	eleventyConfig.setLibrary( 'md',
-		markdownIt().use( markdownItAnchor )
-	);
+  // Markdown settings
+  eleventyConfig.setLibrary( 'md',
+    markdownIt().use( markdownItAnchor )
+  );
 }
 ```
 
 ## Step 3: Usage
 
-**All headings must be in proper order without skipping levels.** Please reference [H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) for more information.
+**All headings must be in proper order without skipping levels** <sup>[[3]](#fn3)</sup>.
 
-Open a layout template file and add the filter to your content.
+Open a layout template file, add the filter in an `<aside>` element, and place it before your content. This gives you a good outline, and lets people review the TOC before reading the content.
 
-Liquid
+**Liquid**
 ```liquid
-<aside>
-  {{ content | toc }}
-</aside>
+{{ content | toc }}
 
-<div>
+<main>
   {{ content }}
-</div>
+</main>
 ```
 
-Nunjucks
-```njk
-<aside>
-  {{ content | toc | safe }}
-</aside>
-
-<div>
-  {{ content | safe }}
-</div>
-```
+**Nunjucks**
 
 Always include the safe filter when using Nunjucks.
 
-### Conditional Rendering
-
-You may want to conditionally render the wrapper element. Because the filter will return `undefined` when no markup is generated.
-
-Liquid
-```liquid
-{% if content | toc %}
-<aside>
-  {{ content | toc }}
-</aside>
-{% endif %}
-```
-
-Nunjucks
 ```njk
-{% if content | toc %}
-<aside>
-  {{ content | toc | safe }}
-</aside>
-{% endif %}
+{{ content | toc | safe }}
+
+<main>
+  {{ content | safe }}
+</main>
 ```
 
-### Override Default Options
+### Default Options
 
-Default Options
 ```js
 {
-  // heading levels to include
   tags: ['h2', 'h3', 'h4', 'h5', 'h6'],
-
-  // container element
   wrapper: 'nav',
-
-  // class on the container element
-  wrapperClass: 'toc',
-
-  // use a heading for the TOC
+  wrapperClass: 'nav-toc',
   heading: true,
-
-  // CSS class name of the TOC heading
-  headingClass: 'toc-heading',
-
-  // level of the TOC heading
+  headingClass: 'nav-toc-heading',
   headingLevel: 'h2',
-
-  // text of the TOC heading
   headingText: 'Table of contents',
-
-  // use unordered lists instead of ordered lists
-  ul: false,
-
-  // use flat list structure
-  flat: false,
+  listType: 'ol',
+  listClass: 'nav-toc-list',
+  listItemClass: 'nav-toc-list-item',
+  listItemAnchorClass: 'nav-toc-list-item-anchor'
 }
 ```
 
+| Option                | Data Type | Description                                        | Notes                                                                                                           |
+| --------------------- | --------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `tags`                | Object     | An array of heading levels to include in the TOC.  | Page titles (i.e. `h1`) should be excluded.                                                                     |
+| `wrapper`             | String    | The navigation landmark element of the TOC.        | In most cases use `nav`. If you replace it, be sure it’s valid HTML and accessible.                             |
+| `wrapperClass`        | String    | The CSS class name for the TOC parent element.     | Using an empty string removes the `class` attribute.                                                            |
+| `heading`             | Boolean   | Whether the TOC uses a heading element.            | Using heading text for sections helps everyone.                                                                 |
+| `headingClass`        | String    | The CSS class name for the TOC heading element.    | Using an empty string removes the `class` attribute.                                                            |
+| `headingLevel`        | String    | The level of the TOC heading element.              | In most cases use `h2`, but you can use `h2` – `h6`. If you replace it, be sure it’s valid HTML and accessible. |
+| `headingText`         | String    | The TOC heading element text.                      | Keep it concise and relevant.                                                                                   |
+| `listType`            | String    | The type of list for navigation items.             | Use `ol` or `ul`. Other elements won’t work.                                                                    |
+| `listClass`           | String    | The CSS class name for the list.                   | Using an empty string removes the `class` attribute.                                                            |
+| `listItemClass`       | String    | The CSS class name for each list item.             | Using an empty string removes the `class` attribute.                                                            |
+| `listItemAnchorClass` | String    | The CSS class name for each anchor in a list item. | Using an empty string removes the `class` attribute.                                                            |
+
+### Override Default Options
+
 You can override the default options in the Eleventy config file or inline.
 
-Eleventy config file
+**Eleventy config file**
 ```js
 eleventyConfig.addPlugin( pluginToC, {
-	wrapper: 'div',
-	wrapperClass: 'page-toc',
-	wrapperHeadingClass: 'page-toc-heading'
+  wrapperClass: 'page-toc',
+  wrapperHeadingClass: 'page-toc-heading',
+  headingText: 'Topics',
+  listType: 'ul'
 });
 ```
 
 Inline options must be a stringified JSON object (`JSON.parse()`-able). You only need the key-value pairs you want to override. All [default-options](#default-options) are preserved.
 
-Inline (Liquid)
+**Inline (Liquid)**
 ```liquid
-<aside>
-  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' }}
-</aside>
+{{ content | toc(tags=['h2','h3'],wrapperClass='toc') }}
 ```
 
-Inline (Nunjucks)
+**Inline (Nunjucks)**
 ```liquid
-<aside>
-  {{ content | toc: '{"tags":["h2","h3"],"wrapper":"div","wrapperClass":"page-toc"}' | safe }}
-</aside>
+{{ content | toc(tags=['h2','h3'],wrapperClass='toc') | safe }}
 ```
+
+## References
+
+1. <cite id="fn1">[4.3.6 Navigation | WAI-ARIA Authoring Practices 1.2](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_lh_navigation) W3C</cite> [↑](#fnRef1)
+1. <cite id="fn2">[Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.2/examples/landmarks/navigation.html) W3C ARIA Authoring Practices Task Force </cite> [↑](#fnRef2)
+1. <cite id="fn3">[H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) Techniques for WCAG 2.1</cite> [↑](#fnRef3)
