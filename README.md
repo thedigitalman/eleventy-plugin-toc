@@ -89,7 +89,7 @@ module.exports = function ( eleventyConfig ) {
 
 ## Step 3: Usage
 
-**All headings must be in proper order without skipping levels** <sup>[[3]](#fn3)</sup>.
+**All headings must be in proper order without skipping levels** <sup id="fnRef3">[[3]](#fn3)</sup>.
 
 Open a layout template file, add the filter in an `<aside>` element, and place it before your content. This gives you a good outline, and lets people review the TOC before reading the content.
 
@@ -159,8 +159,6 @@ eleventyConfig.addPlugin( pluginToC, {
   listType: 'ul'
 });
 ```
-
-Inline options must be a stringified JSON object (`JSON.parse()`-able). You only need the key-value pairs you want to override. All [default-options](#default-options) are preserved.
 
 **Inline (Liquid)**
 ```liquid
