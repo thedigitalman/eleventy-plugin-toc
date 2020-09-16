@@ -174,6 +174,6 @@ Inline options must be a stringified JSON object (`JSON.parse()`-able). You only
 
 ## References
 
-1. <cite id="fn1">[4.3.6 Navigation | WAI-ARIA Authoring Practices 1.2](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_lh_navigation) W3C</cite> [↑](#fnRef1)
-1. <cite id="fn2">[Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.2/examples/landmarks/navigation.html) W3C ARIA Authoring Practices Task Force </cite> [↑](#fnRef2)
-1. <cite id="fn3">[H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) Techniques for WCAG 2.1</cite> [↑](#fnRef3)
+1. <span id="fn1"></span>[4.3.6 Navigation | WAI-ARIA Authoring Practices 1.2](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_lh_navigation) W3C [↑](#fnRef1)
+1. <span id="fn2"></span>[Navigation Landmark: ARIA Landmark Example](https://www.w3.org/TR/wai-aria-practices-1.2/examples/landmarks/navigation.html) W3C ARIA Authoring Practices Task Force [↑](#fnRef2)
+1. <span id="fn3"></span>[H42: Using h1-h6 to identify headings](https://www.w3.org/WAI/WCAG21/Techniques/html/H42) Techniques for WCAG 2.1 [↑](#fnRef3)
