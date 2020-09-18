@@ -153,8 +153,8 @@ You can override the default options in the Eleventy config file or inline.
 **Eleventy config file**
 ```js
 eleventyConfig.addPlugin( pluginToC, {
-  wrapperClass: 'page-toc',
-  wrapperHeadingClass: 'page-toc-heading',
+  wrapperClass: 'toc',
+  headingClass: 'toc-heading',
   headingText: 'Topics',
   listType: 'ul'
 });
@@ -162,12 +162,12 @@ eleventyConfig.addPlugin( pluginToC, {
 
 **Inline (Liquid)**
 ```liquid
-{{ content | toc(wrapperClass='page-toc',wrapperHeadingClass='page-toc-heading',headingText='Topics',listType='ul') }}
+{{ content | toc(wrapperClass='toc',headingClass='toc-heading',headingText='Topics',listType='ul') }}
 ```
 
 **Inline (Nunjucks)**
 ```liquid
-{{ content | toc(wrapperClass='page-toc',wrapperHeadingClass='page-toc-heading',headingText='Topics',listType='ul') | safe }}
+{{ content | toc(wrapperClass='toc',headingClass='toc-heading',headingText='Topics',listType='ul') | safe }}
 ```
 
 ## References
