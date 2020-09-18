@@ -1,11 +1,11 @@
-const buildTOC = require('./src/BuildTOC')
-const parseOptions = require('./src/ParseOptions')
+const Toc = require( './toc' );
 
-module.exports = (eleventyConfig, globalOpts) => {
-  globalOpts = globalOpts || {}
-  eleventyConfig.namespace(globalOpts, () => {
-    eleventyConfig.addFilter('toc', (content, localOpts) => {
-      return buildTOC(content, parseOptions(localOpts, globalOpts))
-    })
-  })
-}
+module.exports = {
+  initArguments: {},
+  configFunction: function ( eleventyConfig, options = {} ) {
+    eleventyConfig.addFilter( 'toc', ( content, opts ) => {
+      const toc = new Toc( content, { ...options, ...opts } );
+      return toc.html();
+    });
+  },
+};
