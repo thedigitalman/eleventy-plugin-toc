@@ -175,7 +175,7 @@ class Item {
 class Toc {
   constructor( htmlstring = '', options = defaults ) {
     this.options = { ...defaults, ...options };
-    this.root = new Item();
+    this.root = new Item( '', this.options );
     this.root.parent = this.root;
 
     const selector = this.options.tags.join( ',' ),
@@ -186,7 +186,7 @@ class Toc {
       let previous = this.root;
 
       headings.each(( index, heading ) => {
-        const current = new Item( $( heading )),
+        const current = new Item( $( heading ), this.options ),
           parent = getParent( previous, current );
 
         current.parent = parent;
