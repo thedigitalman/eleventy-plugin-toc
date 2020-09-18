@@ -91,7 +91,7 @@ module.exports = function ( eleventyConfig ) {
 
 **All headings must be in proper order without skipping levels** <sup id="fnRef3">[[3]](#fn3)</sup>.
 
-Open a layout template file, add the filter in an `<aside>` element, and place it before your content. This gives you a good outline, and lets people review the TOC before reading the content.
+Open a layout template file and add the filter before your content. This gives you a good outline, and lets people review the TOC before reading the content.
 
 **Liquid**
 ```liquid
