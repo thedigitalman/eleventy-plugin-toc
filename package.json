@@ -24,6 +24,7 @@
     "url": "https://github.com/thedigitalman/eleventy-plugin-toc/issues"
   },
   "homepage": "https://github.com/thedigitalman/eleventy-plugin-toc#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "dependencies": {
     "cheerio": "1.0.0-rc.3"
   },
