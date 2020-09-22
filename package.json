@@ -1,6 +1,6 @@
 {
-  "name": "eleventy-plugin-toc-a11y",
-  "version": "2.0.0",
+  "name": "@thedigitalman/eleventy-plugin-toc-a11y",
+  "version": "2.0.1",
   "description": "An 11ty plugin to generate an accessible table of contents from page headings using an 11ty filter.",
   "main": ".eleventy.js",
   "scripts": {
