@@ -34,8 +34,8 @@ It adds a navigation landmark with a heading and ARIA role to make it accessible
 
 **HTML**
 ```html
-<nav class="nav-toc" role="navigation" aria-labelledby="navToc">
-  <h2 class="nav-toc-heading" id="navTOC">Table of contents</h2>
+<nav class="nav-toc" role="navigation" aria-labelledby="nav-toc">
+  <h2 class="nav-toc-heading" id="nav-toc">Table of contents</h2>
   <ol class="nav-toc-list">
     <li class="nav-toc-list-item">
       <a class="nav-toc-list-item-anchor" href="#apples">Apples</a>

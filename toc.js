@@ -205,10 +205,10 @@ class Toc {
       root = this.get(),
       markupWrapperStart = `<${wrapper} role="navigation" aria-label="${headingText}">`,
       markupWrapperStartClass = `<${wrapper} class="${wrapperClass}" role="navigation" aria-label="${headingText}">`,
-      markupWrapperHeadingStart = `<${wrapper} role="navigation" aria-labelledby="navToc">`,
-      markupWrapperHeadingStartClass = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="navToc">`,
-      markupHeading = `<${headingLevel} id="navTOC">${headingText}</${headingLevel}>`,
-      markupHeadingClass = `<${headingLevel} class="${headingClass}" id="navTOC">${headingText}</${headingLevel}>`,
+      markupWrapperHeadingStart = `<${wrapper} role="navigation" aria-labelledby="${wrapperClass}">`,
+      markupWrapperHeadingStartClass = `<${wrapper} class="${wrapperClass}" role="navigation" aria-labelledby="${wrapperClass}">`,
+      markupHeading = `<${headingLevel} id="${wrapperClass}">${headingText}</${headingLevel}>`,
+      markupHeadingClass = `<${headingLevel} class="${headingClass}" id="${wrapperClass}">${headingText}</${headingLevel}>`,
       markupWrapperEnd = `${root.html()}</${wrapper}>`;
 
     let html = '';
