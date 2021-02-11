@@ -60,7 +60,7 @@ It adds a navigation landmark with a heading and ARIA role to make it accessible
 ## Step 1: Installation
 
 ```sh
-npm install eleventy-plugin-toc-a11y --save-dev
+npm install @thedigitalman/eleventy-plugin-toc-a11y --save-dev
 ```
 
 ## Step 2: Configuration
