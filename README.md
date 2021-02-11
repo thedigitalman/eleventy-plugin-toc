@@ -72,7 +72,7 @@ You can do this manually, but using [`markdown-it`](https://www.npmjs.com/packag
 Open your Eleventy config file (probably `.eleventy.js`), use `addPlugin`, and add some Markdown settings.
 
 ```js
-const eleventyPluginTOC = require( 'eleventy-plugin-toc-a11y' );
+const eleventyPluginTOC = require( '@thedigitalman/eleventy-plugin-toc-a11y' );
 const markdownIt = require( 'markdown-it' );
 const markdownItAnchor = require( 'markdown-it-anchor' );
 
